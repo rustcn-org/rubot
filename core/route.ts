@@ -1,7 +1,7 @@
 import { Router } from "oak/mod.ts";
 
+import { hooks } from "../service/hooks.ts";
+
 export const router = new Router();
 
-router.get("/", (context) => {
-  context.response.body = "Hello 123";
-});
+router.post("/callback/", hooks);

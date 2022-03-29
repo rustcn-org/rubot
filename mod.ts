@@ -1,11 +1,13 @@
-import { WebService } from "./core/app.ts";
-import { loadConfig } from "./core/config.ts";
+import { Application } from "oak/mod.ts";
 
-// 加载本地配置信息
-const config = loadConfig();
+import { router } from "./core/route.ts";
+import { CommonConfig } from "./config/common.ts";
 
-if (!config.port) {
-    config.port = 8080;
-}
+// 创建一个 oak 应用程序
+const app = new Application();
 
-WebService.startup(config.port);
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+// 启动 Oak 服务器
+app.listen({ port: CommonConfig.port });
