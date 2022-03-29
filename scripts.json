@@ -1,0 +1,14 @@
+{
+  "$schema": "https://deno.land/x/denon@2.5.0/schema.json",
+  "scripts": {
+    "start": {
+      "cmd": "deno run mod.ts",
+      "allow": ["net", "read"],
+      "importMap": "modules.json"
+    }
+  },
+  "watch": true,
+  "logger": {
+    "fullscreen": true
+  }
+}
