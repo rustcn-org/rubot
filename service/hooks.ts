@@ -12,19 +12,5 @@ export async function hooks(context: Context) {
 
   const payload = await body.value;
   // 在这里我们需要检查 action 的类型（是 ISSUE 的创建还是评论的创建）
-  const action_tyoe = payload.action;
-
-  if (action_tyoe == "created") {
-      // 这里是创建 评论  
-  } else if (action_tyoe == "opened") {
-      // 这里是创建 ISSUE
-  }
-}
-
-async function issue_opened() {
-
-}
-
-async function comment_created() {
-    
+  const action_type = payload.action;
 }
