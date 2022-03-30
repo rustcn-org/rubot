@@ -9,6 +9,7 @@ export async function hooks(context: Context) {
         context.response.body = {
             error: "未知的请求类型",
         };
+        context.response.status = 400;
         return;
     }
 
@@ -27,8 +28,9 @@ export async function hooks(context: Context) {
             creator: payload.comment.user.login,
         };
 
-        context.response.body = await comment_created(cc_info);
-    }
+        await comment_created(cc_info);
+		context.response.body = "OK";
+	}
 }
 
 interface CommentCreated {

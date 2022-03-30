@@ -8,4 +8,4 @@ router.get("/", (ctx) => {
 	ctx.response.body = "Helllo Rubot!";
 });
 
-router.post("/callback/", hooks);
+router.post("/callback", hooks);
