@@ -56,12 +56,11 @@ export async function updateScoreList(
         curr[user] = {
             score: num,
             article_num: 0,
+            is_approver: false,
+            is_admin: false,
         };
     } else {
-        curr[user] = {
-            score: curr[user].score + num,
-            article_num: curr[user].article_num,
-        };
+        curr[user].score += num;
     }
 
     const _url =
@@ -76,7 +75,7 @@ export async function updateScoreList(
 
     const requestBody = {
         message: "更新贡献者信息",
-        content: btoa(JSON.stringify(curr)),
+        content: btoa(JSON.stringify(curr, null, 4)),
         sha: curr_info.sha,
     };
 
