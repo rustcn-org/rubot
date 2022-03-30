@@ -67,6 +67,8 @@ async function comment_created(info: CommentCreated): Promise<string> {
         if (info.issue.assignee != null) {
             updateScoreList(info.issue.assignee, score_num);
         }
+    } else if (approved_type == "选题") {
+        updateScoreList(info.issue.author, score_num);
     }
 
     return "OK";

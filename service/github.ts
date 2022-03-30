@@ -33,13 +33,13 @@ export async function getApproverList(): Promise<string[]> {
 
 export async function getContributorInfo() {
     const _url =
-        "https://raw.githubusercontent.com/" +
+        "https://api.github.com/repos/" +
         CommonConfig.organization.name +
         "/" +
         CommonConfig.repository +
-        "/main/Contributors.json";
+        "/contents/Contributors.json";
     const url =
-        "https://raw.githubusercontent.com/mrxiaozhuox/Rustt/main/Contributors.json";
+        "https://api.github.com/repos/mrxiaozhuox/Rustt/contents/Contributors.json";
     const response = await fetch(url);
     return await response.json();
 }
@@ -47,16 +47,17 @@ export async function getContributorInfo() {
 export async function updateScoreList(user: string, num: number) {
     // https://api.github.com/repos/{owner}/{repo}/contents/{path}
 
-    const curr = await getContributorInfo();
+    const curr_info = await getContributorInfo();
+    const curr = JSON.parse(atob(curr_info.content));
     if (curr[user] == null) {
         curr[user] = {
             score: num,
             article_num: 0,
         };
     } else {
-      curr[user] = {
-        score: curr[user].score + num,
-      }
+        curr[user] = {
+            score: curr[user].score + num,
+        };
     }
 
     const _url =
@@ -67,18 +68,25 @@ export async function updateScoreList(user: string, num: number) {
         "/contents/Contributors.json";
 
     const url =
-        "https://api.github.com/mrxiaozhuox/Rustt/contents/Contributors.json";
+        "https://api.github.com/repos/mrxiaozhuox/Rustt/contents/Contributors.json";
 
-    const requestBody = new FormData();
-    requestBody.append("message", "更新贡献者信息");
-    requestBody.append("content", curr);
+    const requestBody = {
+        message: "更新贡献者信息",
+        content: btoa(JSON.stringify(curr)),
+        sha: curr_info.sha,
+    };
+    // requestBody.append("message", "更新贡献者信息");
+    // requestBody.append("content", btoa(JSON.stringify(curr)));
 
     let response = await fetch(url, {
         method: "PUT",
         headers: {
+            "content-type": "application/json",
             accept: "application/vnd.github.v3+json",
             authorization: "token " + CommonConfig.bot.token,
         },
-        body: requestBody,
+        body: JSON.stringify(requestBody),
     });
+
+    console.log(await response.text());
 }
