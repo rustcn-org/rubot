@@ -1,7 +1,6 @@
 import { getContributorInfo } from "./github.ts";
 
-const SvgFile = `
-<?xml version="1.0" standalone="yes"?>
+const SvgFile = `<?xml version="1.0" standalone="yes"?>
 <svg xmlns="http://www.w3.org/2000/svg">
     <foreignObject x="10" y="10" width="100%" height="100%">
         <body xmlns="http://www.w3.org/1999/xhtml">
@@ -49,8 +48,7 @@ const SvgFile = `
             </table>
         </body>
     </foreignObject>
-</svg>
-`;
+</svg>`;
 
 const ContributorsTemplate = `
 <tr>
