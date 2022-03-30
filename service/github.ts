@@ -44,7 +44,10 @@ export async function getContributorInfo() {
     return await response.json();
 }
 
-export async function updateScoreList(user: string, num: number) {
+export async function updateScoreList(
+    user: string,
+    num: number
+): Promise<boolean> {
     // https://api.github.com/repos/{owner}/{repo}/contents/{path}
 
     const curr_info = await getContributorInfo();
@@ -76,10 +79,8 @@ export async function updateScoreList(user: string, num: number) {
         content: btoa(JSON.stringify(curr)),
         sha: curr_info.sha,
     };
-    // requestBody.append("message", "更新贡献者信息");
-    // requestBody.append("content", btoa(JSON.stringify(curr)));
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
         method: "PUT",
         headers: {
             "content-type": "application/json",
@@ -89,5 +90,5 @@ export async function updateScoreList(user: string, num: number) {
         body: JSON.stringify(requestBody),
     });
 
-    console.log(await response.text());
+    return response.status == 200;
 }

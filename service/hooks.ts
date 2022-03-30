@@ -8,7 +8,7 @@ export async function hooks(context: Context) {
     context.response.type = "json";
     if (body.type != "json") {
         context.response.body = {
-            error: "未知的请求类型",
+            message: "未知的请求类型",
         };
         context.response.status = 400;
         return;
@@ -22,10 +22,10 @@ export async function hooks(context: Context) {
         await context.request.body({ type: "text" }).value,
         signature
     );
-	if (!status) {
-		context.response.body = "安全验证失败";
-		context.response.status = 400;
-	}
+    if (!status) {
+        context.response.body = "安全验证失败";
+        context.response.status = 400;
+    }
 
     const payload = await body.value;
     const action_type = payload.action;
@@ -42,9 +42,12 @@ export async function hooks(context: Context) {
             creator: payload.comment.user.login,
         };
 
-        await comment_created(cc_info);
+        await comment_created(context, cc_info);
+    } else {
+        context.response.body = {
+            message: "未知的 Hook 类型",
+        };
     }
-	context.response.body = "Done";
 }
 
 interface CommentCreated {
@@ -58,7 +61,7 @@ interface CommentCreated {
     creator: string;
 }
 
-async function comment_created(info: CommentCreated): Promise<string> {
+async function comment_created(context: Context, info: CommentCreated) {
     const approvers = await getApproverList();
     if (approvers.indexOf(info.creator) == -1) {
         return "";
@@ -70,7 +73,8 @@ async function comment_created(info: CommentCreated): Promise<string> {
     score_oper = score_oper.replaceAll(" ", "");
     // 既不是与选题相关的内容 也不是与 翻译 相关的内容
     if (!score_oper.startsWith("翻译+") && !score_oper.startsWith("选题+")) {
-        return "";
+        context.response.status = 200;
+        return;
     }
 
     const approved_type = score_oper.slice(0, 2);
@@ -79,13 +83,26 @@ async function comment_created(info: CommentCreated): Promise<string> {
 
     const score_num = parseInt(score_oper);
 
+    let update_status = false;
     if (approved_type == "翻译") {
         if (info.issue.assignee != null) {
-            updateScoreList(info.issue.assignee, score_num);
+            update_status = await updateScoreList(
+                info.issue.assignee,
+                score_num
+            );
         }
     } else if (approved_type == "选题") {
-        updateScoreList(info.issue.author, score_num);
+        update_status = await updateScoreList(info.issue.author, score_num);
     }
 
-    return "OK";
+    if (update_status) {
+        context.response.body = {
+            message: "完成",
+        };
+    } else {
+        context.response.body = {
+            message: "更新分数失败",
+        };
+        context.response.status = 500;
+    }
 }
