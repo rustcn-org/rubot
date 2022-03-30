@@ -96,23 +96,24 @@ interface contributor {
 
 type STupleN = [string, number];
 
+// deno-lint-ignore require-await
 export async function markdownContributors() {
     let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
     content += "| --- | --- | --- | --- | --- |\n";
-    const info = await getContributorInfo();
-    const contributors: Map<string, contributor> = JSON.parse(
-        atob(info.content)
-    );
-    console.log(contributors);
-
+    // const info = await getContributorInfo();
+    const info = {
+        content:
+            "ewogICAgIm1yeGlhb3podW94IjogewogICAgICAgICJzY29yZSI6IDMwLAogICAgICAgICJhcnRpY2xlX251bSI6IDAKICAgIH0sCiAgICAieWt1bmJvdCI6IHsKICAgICAgICAic2NvcmUiOiA0MSwKICAgICAgICAiYXJ0aWNsZV9udW0iOiAwCiAgICB9Cn0=",
+    };
+    const obj = JSON.parse(atob(info.content));
+    const contributors: Map<string, contributor> = new Map(Object.entries(obj));
     const arrObj: STupleN[] = [];
     contributors.forEach((value, key) => {
         const temp: [string, number] = [key, value?.score || 0];
         arrObj.push(temp);
     });
-    console.log(arrObj);
     arrObj.sort((a, b) => {
-        return a[1] - b[1];
+        return b[1] - a[1];
     });
 
     for (let index = 0; index < arrObj.length; index++) {
@@ -130,7 +131,7 @@ export async function markdownContributors() {
             article_num +
             " | " +
             titleTable(score) +
-            " |";
+            " |\n";
     }
     return content;
 }
