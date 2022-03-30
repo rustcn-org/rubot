@@ -1,4 +1,4 @@
-import { Context } from "oak/mod.ts";
+import { Context } from "https://deno.land/x/oak@v10.5.1/mod.ts";
 import { CommonConfig } from "../config/common.ts";
 
 export async function hooks(context: Context) {
