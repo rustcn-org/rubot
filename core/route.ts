@@ -4,4 +4,8 @@ import { hooks } from "../service/hooks.ts";
 
 export const router = new Router();
 
+router.get("/", (ctx) => {
+  ctx.response.body = "Helllo Rubot!";
+})
+
 router.post("/callback/", hooks);
