@@ -2,7 +2,7 @@ import { getContributorInfo } from "./github.ts";
 
 const SvgFile = `<?xml version="1.0" standalone="yes"?>
 <svg xmlns="http://www.w3.org/2000/svg">
-    <foreignObject x="10" y="10" width="100%" height="100%">
+    <foreignObject x="0" y="0" width="550" height="100%">
         <body xmlns="http://www.w3.org/1999/xhtml">
             <style type="text/css">
                 <![CDATA[
@@ -52,11 +52,11 @@ const SvgFile = `<?xml version="1.0" standalone="yes"?>
 
 const ContributorsTemplate = `
 <tr>
-<th>GitHub 昵称</th>
-<th>贡献者等级</th>
-<th>积分数</th>
+<th>昵称</th>
+<th>贡献等级</th>
+<th>积分</th>
 <th>文章数</th>
-<th>组织角色</th>
+<th>角色</th>
 </tr>
 `;
 
