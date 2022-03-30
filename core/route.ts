@@ -1,4 +1,4 @@
-import { Router } from "oak/mod.ts";
+import { Router } from "https://deno.land/x/oak@v10.5.1/mod.ts";
 
 import { hooks } from "../service/hooks.ts";
 

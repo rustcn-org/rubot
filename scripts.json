@@ -3,8 +3,7 @@
   "scripts": {
     "start": {
       "cmd": "deno run mod.ts",
-      "allow": ["net", "read"],
-      "importMap": "modules.json"
+      "allow": ["net", "read"]
     }
   },
   "watch": true,

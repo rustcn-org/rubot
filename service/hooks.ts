@@ -50,5 +50,5 @@ async function comment_created(info: CommentCreated) {
         }
     }
   );
-  response.body;
+  const _teams_info = await response.json();
 }
