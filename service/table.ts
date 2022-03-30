@@ -68,7 +68,7 @@ export async function drawContributors() {
     const info = await getContributorInfo();
     const contributors = JSON.parse(atob(info.content));
 
-    console.log(contributors);
+    // console.log(contributors);
     for (const name in contributors) {
         const score = contributors[name].score;
         const article_num = contributors[name].article_num;
@@ -85,6 +85,54 @@ export async function drawContributors() {
     svg_str = svg_str.replace("{{table-data}}", content);
     const encoder = new TextEncoder();
     return encoder.encode(svg_str);
+}
+
+interface contributor {
+    score: number;
+    article_num: number;
+    is_approver: boolean;
+    is_admin: boolean;
+}
+
+type STupleN = [string, number];
+
+export async function markdownContributors() {
+    let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
+    content += "| --- | --- | --- | --- | --- |\n";
+    const info = await getContributorInfo();
+    const contributors: Map<string, contributor> = JSON.parse(
+        atob(info.content)
+    );
+    console.log(contributors);
+
+    const arrObj: STupleN[] = [];
+    contributors.forEach((value, key) => {
+        const temp: [string, number] = [key, value?.score || 0];
+        arrObj.push(temp);
+    });
+    console.log(arrObj);
+    arrObj.sort((a, b) => {
+        return a[1] - b[1];
+    });
+
+    for (let index = 0; index < arrObj.length; index++) {
+        const score = contributors.get(arrObj[index][0])?.score || 0;
+        const article_num =
+            contributors.get(arrObj[index][0])?.article_num || 0;
+        content +=
+            "| " +
+            arrObj[index][0] +
+            " | " +
+            levelTable(score) +
+            " | " +
+            score +
+            " | " +
+            article_num +
+            " | " +
+            titleTable(score) +
+            " |";
+    }
+    return content;
 }
 
 function levelTable(score: number): string {
