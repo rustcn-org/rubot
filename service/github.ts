@@ -57,6 +57,7 @@ export async function updateScoreList(user: string, num: number) {
     } else {
         curr[user] = {
             score: curr[user].score + num,
+            article_num: curr[user].article_num,
         };
     }
 

@@ -1,6 +1,7 @@
 import { Context } from "https://deno.land/x/oak@v10.5.1/mod.ts";
-import { CommonConfig } from "../config/common.ts";
+// import { CommonConfig } from "../config/common.ts";
 import { getApproverList, updateScoreList } from "./github.ts";
+import { verify } from "https://raw.githubusercontent.com/octokit/webhooks-methods.js/v2.0.0/src/web.ts";
 
 export async function hooks(context: Context) {
     const body = context.request.body();
@@ -12,6 +13,19 @@ export async function hooks(context: Context) {
         context.response.status = 400;
         return;
     }
+
+    const signatureHeader =
+        context.request.headers.get("X-Hub-Signature-256") || "";
+    const signature = signatureHeader.slice("sha256=".length);
+    const status = await verify(
+        Deno.env.get("HOOK_SECRET") || "",
+        await context.request.body({ type: "text" }).value,
+        signature
+    );
+	if (!status) {
+		context.response.body = "安全验证失败";
+		context.response.status = 400;
+	}
 
     const payload = await body.value;
     const action_type = payload.action;
@@ -29,8 +43,8 @@ export async function hooks(context: Context) {
         };
 
         await comment_created(cc_info);
-		context.response.body = "OK";
-	}
+    }
+	context.response.body = "Done";
 }
 
 interface CommentCreated {
