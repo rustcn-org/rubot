@@ -1,5 +1,6 @@
 import { Context } from "https://deno.land/x/oak@v10.5.1/mod.ts";
 import { CommonConfig } from "../config/common.ts";
+import { getApproverList } from "./github.ts";
 
 export async function hooks(context: Context) {
   const body = context.request.body();
@@ -25,7 +26,7 @@ export async function hooks(context: Context) {
       creator: payload.comment.user.login,
     };
 
-    await comment_created(cc_info);
+    context.response.body = await comment_created(cc_info);
   }
 }
 
@@ -39,16 +40,26 @@ interface CommentCreated {
   creator: string;
 }
 
-async function comment_created(info: CommentCreated) {
-  const response = await fetch(
-    "https://api.github.com/orgs/" + CommonConfig.organization.name + "/teams",
-    {
-        method: "POST",
-        headers: {
-            "Accept": "application/vnd.github.v3+json",
-            "Authorization": "token " + CommonConfig.organization.token,
-        }
-    }
-  );
-  const _teams_info = await response.json();
+async function comment_created(info: CommentCreated): Promise<string> {
+  const approvers = await getApproverList();
+  if (approvers.indexOf(info.creator) == -1) {
+    return "";
+  }
+  // 具体解析 Approver 的评论
+  // Approved: [选题|翻译] + 10
+  const content = info.content.trim();
+  let score_oper = content.split("\n")[0];
+  score_oper = score_oper.replaceAll(" ", "");
+  // 既不是与选题相关的内容 也不是与 翻译 相关的内容
+  if (!score_oper.startsWith("翻译+") && !score_oper.startsWith("选题+")) {
+    return "";
+  }
+
+  const _approved_type = score_oper.slice(0, 3);
+
+  score_oper = score_oper.slice(3, score_oper.length);
+
+  console.log(score_oper);
+
+  return "OK";
 }

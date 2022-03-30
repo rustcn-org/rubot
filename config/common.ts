@@ -1,10 +1,17 @@
 export const CommonConfig = {
   hostname: "127.0.0.1",
-  port: 80,
+  port: 8080,
+
+  bot: {
+    name: "ykunbot",
+    token: ":{bot_token}",
+  },
 
   organization: {
     name: "studyrs",
-    token: "XXXX",
+    teams: {
+      "approvers": "rustt-approvers",
+    },
   },
 
   repository: "Rustt",
