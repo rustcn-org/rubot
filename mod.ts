@@ -10,7 +10,4 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 // 启动 Oak 服务器
-app.listen({
-    hostname: "rubot.deno.dev",
-    port: CommonConfig.port,
-});
+app.listen({ port: CommonConfig.port });
