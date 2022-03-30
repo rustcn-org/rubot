@@ -39,7 +39,7 @@ export async function getContributorInfo() {
         CommonConfig.repository +
         "/contents/Contributors.json";
     const url =
-        "https://api.github.com/repos/mrxiaozhuox/Rustt-Test/contents/Contributors.json";
+        "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
     const response = await fetch(url);
     return await response.json();
 }
@@ -68,7 +68,7 @@ export async function updateScoreList(user: string, num: number) {
         "/contents/Contributors.json";
 
     const url =
-        "https://api.github.com/repos/mrxiaozhuox/Rustt-Test/contents/Contributors.json";
+        "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
 
     const requestBody = {
         message: "更新贡献者信息",
