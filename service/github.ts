@@ -125,9 +125,14 @@ async function updateRecord(info: any) {
         "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Record.json";
     const file_info = await (await fetch(url)).json();
 
+    // deno-lint-ignore no-explicit-any
+    const curr: Array<any> = JSON.parse(atob(file_info.content));
+
+    curr.push(info);
+
     const requestBody = {
         message: "更新记录信息",
-        content: encode(JSON.stringify(info, null, 4)),
+        content: encode(JSON.stringify(curr, null, 4)),
         sha: file_info.sha,
     };
 
