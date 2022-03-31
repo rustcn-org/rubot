@@ -70,7 +70,12 @@ async function comment_created(context: Context, info: CommentCreated) {
     // [选题|翻译] + 10
     const content = info.content.trim();
     const content_lines = content.split("\n");
-    let score_oper = content_lines[0];
+    if (content_lines.length <= 1 || content_lines[0].trim().toLowerCase() != "`@rubot`") {
+        context.response.status = 200;
+        return;
+    }
+
+    let score_oper = content_lines[1];
     score_oper = score_oper.replaceAll(" ", "");
     // 既不是与选题相关的内容 也不是与 翻译 相关的内容
     if (!score_oper.startsWith("翻译+") && !score_oper.startsWith("选题+")) {
@@ -88,8 +93,8 @@ async function comment_created(context: Context, info: CommentCreated) {
     if (approved_type == "翻译") {
         // 这里再检查一下下一行中有没有文章数信息
         let article_num = 1;
-        if (content_lines.length > 1) {
-            let next_line = content_lines[1].trim();
+        if (content_lines.length > 2) {
+            let next_line = content_lines[2].trim();
             next_line = next_line.replaceAll(" ", "");
             if (
                 next_line.startsWith("文章数+") ||
