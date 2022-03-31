@@ -100,7 +100,7 @@ type STupleN = [string, number];
 export function markdownContributors(info: any) {
     let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
     content += "| --- | --- | --- | --- | --- |\n";
-    const obj = JSON.parse(atob(info.content));
+    const obj = info;
     const contributors: Map<string, contributor> = new Map(Object.entries(obj));
     const arrObj: STupleN[] = [];
     contributors.forEach((value, key) => {

@@ -121,7 +121,7 @@ async function updateRanking(list: any) {
 
     const requestBody = {
         message: "更新贡献者信息",
-        content: btoa(JSON.stringify(content, null, 4)),
+        content: btoa(content),
         sha: file_info.sha,
     };
 
