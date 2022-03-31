@@ -76,7 +76,7 @@ export async function updateScoreList(
 
     const requestBody = {
         message: "[KunBot]：更新贡献者数据",
-        content: btoa(decodeURIComponent(JSON.stringify(curr, null, 4))),
+        content: btoa(escape(decodeURIComponent(JSON.stringify(curr, null, 4)))),
         sha: curr_info.sha,
     };
 
@@ -121,7 +121,7 @@ async function updateRanking(list: any) {
 
     const requestBody = {
         message: "[KunBot]：更新贡献者排行",
-        content: btoa(decodeURIComponent(content)),
+        content: btoa(escape(decodeURIComponent(content))),
         sha: file_info.sha,
     };
 
