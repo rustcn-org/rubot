@@ -99,6 +99,11 @@ async function comment_created(context: Context, info: CommentCreated) {
             }
         }
 
+        // 如果解析错误，按照 1 计算就行
+        if (isNaN(article_num)) {
+            article_num = 1;
+        }
+
         if (info.issue.assignee != null) {
             update_status = await updateScoreList(
                 info.issue.assignee,
