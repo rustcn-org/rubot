@@ -1,6 +1,6 @@
 import { CommonConfig } from "../config/common.ts";
 import { markdownContributors } from "./table.ts";
-import { encode, decode } from "https://deno.land/std/encoding/base64.ts";
+import { encode } from "https://deno.land/std@0.132.0/encoding/base64.ts";
 
 export async function getApproverList(): Promise<string[]> {
     const response = await fetch(
@@ -48,7 +48,8 @@ export async function getContributorInfo() {
 
 export async function updateScoreList(
     user: string,
-    num: number
+    num: number,
+    article: number,
 ): Promise<boolean> {
     // https://api.github.com/repos/{owner}/{repo}/contents/{path}
 
@@ -57,12 +58,13 @@ export async function updateScoreList(
     if (curr[user] == null) {
         curr[user] = {
             score: num,
-            article_num: 0,
+            article_num: article,
             is_approver: false,
             is_admin: false,
         };
     } else {
         curr[user].score += num;
+        curr[user].article_num += article;
     }
 
     const _url =

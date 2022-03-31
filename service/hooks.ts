@@ -69,7 +69,8 @@ async function comment_created(context: Context, info: CommentCreated) {
     // 具体解析 Approver 的评论
     // [选题|翻译] + 10
     const content = info.content.trim();
-    let score_oper = content.split("\n")[0];
+    const content_lines = content.split("\n");
+    let score_oper = content_lines[0];
     score_oper = score_oper.replaceAll(" ", "");
     // 既不是与选题相关的内容 也不是与 翻译 相关的内容
     if (!score_oper.startsWith("翻译+") && !score_oper.startsWith("选题+")) {
@@ -85,24 +86,38 @@ async function comment_created(context: Context, info: CommentCreated) {
 
     let update_status = false;
     if (approved_type == "翻译") {
+        // 这里再检查一下下一行中有没有文章数信息
+        let article_num = 1;
+        if (content_lines.length > 1) {
+            const next_line = content_lines[1].trim();
+            if (
+                next_line.startsWith("文章数+") ||
+                next_line.startsWith("篇章数+")
+            ) {
+                const article_num_str = next_line.slice(0, 4);
+                article_num = parseInt(article_num_str);
+            }
+        }
+
         if (info.issue.assignee != null) {
             update_status = await updateScoreList(
                 info.issue.assignee,
-                score_num
+                score_num,
+                article_num
             );
         }
     } else if (approved_type == "选题") {
-        update_status = await updateScoreList(info.issue.author, score_num);
+        update_status = await updateScoreList(info.issue.author, score_num, 0);
     }
 
     if (update_status) {
         context.response.body = {
-			message: "完成"
-		};
+            message: "完成",
+        };
     } else {
-		context.response.body = {
-			message: "更新分数失败"
-		}
-		context.response.status = 500
-	}
+        context.response.body = {
+            message: "更新分数失败",
+        };
+        context.response.status = 500;
+    }
 }
