@@ -96,15 +96,10 @@ interface contributor {
 
 type STupleN = [string, number];
 
-// deno-lint-ignore require-await
-export async function markdownContributors() {
+// deno-lint-ignore no-explicit-any
+export function markdownContributors(info: any) {
     let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
     content += "| --- | --- | --- | --- | --- |\n";
-    // const info = await getContributorInfo();
-    const info = {
-        content:
-            "ewogICAgIm1yeGlhb3podW94IjogewogICAgICAgICJzY29yZSI6IDMwLAogICAgICAgICJhcnRpY2xlX251bSI6IDAKICAgIH0sCiAgICAieWt1bmJvdCI6IHsKICAgICAgICAic2NvcmUiOiA0MSwKICAgICAgICAiYXJ0aWNsZV9udW0iOiAwCiAgICB9Cn0=",
-    };
     const obj = JSON.parse(atob(info.content));
     const contributors: Map<string, contributor> = new Map(Object.entries(obj));
     const arrObj: STupleN[] = [];

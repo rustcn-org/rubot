@@ -1,4 +1,5 @@
 import { CommonConfig } from "../config/common.ts";
+import { markdownContributors } from "./table.ts";
 
 export async function getApproverList(): Promise<string[]> {
     const response = await fetch(
@@ -77,6 +78,51 @@ export async function updateScoreList(
         message: "更新贡献者信息",
         content: btoa(JSON.stringify(curr, null, 4)),
         sha: curr_info.sha,
+    };
+
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "content-type": "application/json",
+            accept: "application/vnd.github.v3+json",
+            authorization: "token " + CommonConfig.bot.token,
+        },
+        body: JSON.stringify(requestBody),
+    });
+
+    updateRanking(curr);
+
+    return response.status == 200;
+}
+
+// deno-lint-ignore no-explicit-any
+async function updateRanking(list: any) {
+    let content = "# 贡献者排行榜\n";
+    content += markdownContributors(list);
+
+    const _sha_url =
+        "https://api.github.com/repos/" +
+        CommonConfig.organization.name +
+        "/" +
+        CommonConfig.repository +
+        "/contents/Ranking.md";
+    const sha_url =
+        "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Ranking.md";
+    const file_info = await (await fetch(sha_url)).json();
+
+    const _url =
+        "https://api.github.com/repos/" +
+        CommonConfig.organization.name +
+        "/" +
+        CommonConfig.repository +
+        "/contents/Ranking.md";
+    const url =
+        "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Ranking.md";
+
+    const requestBody = {
+        message: "更新贡献者信息",
+        content: btoa(JSON.stringify(content, null, 4)),
+        sha: file_info.sha,
     };
 
     const response = await fetch(url, {
