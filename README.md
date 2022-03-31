@@ -1,3 +1,20 @@
-# rubot
+# Rubot
 
-di di di, we are the robots of Rustt.org
+> 一款用于 Rustt 社区的 Github 机器人。QWQ
+
+## 使用方法
+
+会自动检测 **审批者** 在 ISSUE 中的评论信息：
+
+选题加分，即为 ISSUE 创建者加分：
+```
+选题 + N
+(除第一行规范以外，后面可做备注)
+```
+
+翻译加分，为 Assignee 人员加分：
+```
+翻译 + N
+文章数 + N
+(除前两行外，其他可以自由备注)
+```
