@@ -75,8 +75,8 @@ export async function updateScoreList(
         "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
 
     const requestBody = {
-        message: "更新贡献者信息",
-        content: btoa(JSON.stringify(curr, null, 4)),
+        message: "[KunBot]：更新贡献者数据",
+        content: btoa(decodeURIComponent(JSON.stringify(curr, null, 4))),
         sha: curr_info.sha,
     };
 
@@ -120,8 +120,8 @@ async function updateRanking(list: any) {
         "https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Ranking.md";
 
     const requestBody = {
-        message: "更新贡献者信息",
-        content: btoa(content),
+        message: "[KunBot]：更新贡献者排行",
+        content: btoa(decodeURIComponent(content)),
         sha: file_info.sha,
     };
 
