@@ -97,12 +97,12 @@ async function comment_created(context: Context, info: CommentCreated) {
 
     if (update_status) {
         context.response.body = {
-            message: "完成",
-        };
+			message: "完成"
+		};
     } else {
-        context.response.body = {
-            message: "更新分数失败",
-        };
-        context.response.status = 500;
-    }
+		context.response.body = {
+			message: "更新分数失败"
+		}
+		context.response.status = 500
+	}
 }

@@ -1,5 +1,6 @@
 import { CommonConfig } from "../config/common.ts";
 import { markdownContributors } from "./table.ts";
+import { encode, decode } from "https://deno.land/std/encoding/base64.ts";
 
 export async function getApproverList(): Promise<string[]> {
     const response = await fetch(
@@ -76,7 +77,7 @@ export async function updateScoreList(
 
     const requestBody = {
         message: "[KunBot]：更新贡献者数据",
-        content: btoa(escape(decodeURIComponent(JSON.stringify(curr, null, 4)))),
+        content: encode(JSON.stringify(curr, null, 4)),
         sha: curr_info.sha,
     };
 
@@ -121,7 +122,7 @@ async function updateRanking(list: any) {
 
     const requestBody = {
         message: "[KunBot]：更新贡献者排行",
-        content: btoa(escape(decodeURIComponent(content))),
+        content: encode(content),
         sha: file_info.sha,
     };
 
