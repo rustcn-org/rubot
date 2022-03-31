@@ -76,6 +76,8 @@ async function comment_created(context: Context, info: CommentCreated) {
     ) {
         context.response.status = 200;
         return;
+    } else {
+        content_lines.shift();
     }
     while (content_lines.length > 0 && content_lines[0].trim() == "") {
         content_lines.shift();
