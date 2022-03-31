@@ -112,9 +112,17 @@ export function markdownContributors(info: any) {
     });
 
     for (let index = 0; index < arrObj.length; index++) {
-        const score = contributors.get(arrObj[index][0])?.score || 0;
-        const article_num =
-            contributors.get(arrObj[index][0])?.article_num || 0;
+        const user = contributors.get(arrObj[index][0]);
+        const score = user?.score || 0;
+        const article_num = user?.article_num || 0;
+        let title = titleTable(score);
+        if (user?.is_approver) {
+            title = "审批者";
+        }
+        if (user?.is_admin) {
+            title = "管理员";
+        }
+
         content +=
             "| " +
             arrObj[index][0] +
@@ -125,7 +133,7 @@ export function markdownContributors(info: any) {
             " | " +
             article_num +
             " | " +
-            titleTable(score) +
+            title +
             " |\n";
     }
     return content;
