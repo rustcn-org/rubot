@@ -89,7 +89,8 @@ async function comment_created(context: Context, info: CommentCreated) {
         // 这里再检查一下下一行中有没有文章数信息
         let article_num = 1;
         if (content_lines.length > 1) {
-            const next_line = content_lines[1].trim();
+            let next_line = content_lines[1].trim();
+            next_line = next_line.replaceAll(" ", "");
             if (
                 next_line.startsWith("文章数+") ||
                 next_line.startsWith("篇章数+")
