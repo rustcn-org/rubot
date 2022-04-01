@@ -202,5 +202,10 @@ async function updateRanking(list: any) {
         body: JSON.stringify(requestBody),
     });
 
+    if (response.status != 200) {
+        console.log("[Ranking Failed]: " + JSON.stringify(requestBody));
+        console.log("[Ranking Failed]: " + await response.text());
+    }
+
     return response.status == 200;
 }
