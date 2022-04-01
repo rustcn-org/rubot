@@ -65,7 +65,10 @@ export async function updateScoreList(
 			operator: "+",
 			num: article,
 		},
-		before: curr,
+		before: {
+            score: curr[user].score,
+            article: curr[user].article_num,
+        },
 		timestamp: new Date().getTime(),
 	};
 
