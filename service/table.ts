@@ -150,8 +150,8 @@ export function markdownContributors(info: any) {
             " | " +
             role +
             " | " +
-            title;
-        (" |\n");
+            title +
+            " |\n";
     }
     return content;
 }
