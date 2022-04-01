@@ -67,6 +67,7 @@ export async function updateScoreList(
             num: article,
         },
         before: curr,
+        timestamp: new Date().getTime()
     };
 
     if (curr[user] == null) {
@@ -145,6 +146,10 @@ async function updateRecord(info: any) {
         },
         body: JSON.stringify(requestBody),
     });
+
+    if (response.status != 200) {
+        console.log(await response.text());
+    }
 
     return response.status == 200;
 }
