@@ -164,7 +164,8 @@ async function updateRecord(info: any) {
     });
 
     if (response.status != 200) {
-        console.log(await response.text());
+        console.log("[Record Failed]: " + JSON.stringify(requestBody));
+        console.log("[Record Failed]: " + await response.text());
     }
 
     return response.status == 200;
