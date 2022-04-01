@@ -102,7 +102,7 @@ type STupleN = [string, number];
 export function markdownContributors(info: any) {
     let content =
         "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 | 荣誉称号 ｜\n";
-    content += "| --- | --- | --- | --- | --- |\n";
+    content += "| --- | --- | --- | --- | --- | --- |\n";
     const obj = info;
     const contributors: Map<string, contributor> = new Map(Object.entries(obj));
     const arrObj: STupleN[] = [];
