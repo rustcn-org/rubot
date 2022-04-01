@@ -61,110 +61,109 @@ const ContributorsTemplate = `
 `;
 
 export async function drawContributors() {
-    let svg_str = SvgFile;
-    let content = ContributorsTemplate;
+	let svg_str = SvgFile;
+	let content = ContributorsTemplate;
 
-    // 转换 JSON to HTML
-    const info = await getContributorInfo();
-    const contributors = JSON.parse(atob(info.content));
+	// 转换 JSON to HTML
+	const info = await getContributorInfo();
+	const contributors = JSON.parse(atob(info.content));
 
-    // console.log(contributors);
-    for (const name in contributors) {
-        const score = contributors[name].score;
-        const article_num = contributors[name].article_num;
+	// console.log(contributors);
+	for (const name in contributors) {
+		const score = contributors[name].score;
+		const article_num = contributors[name].article_num;
 
-        content += "<tr>";
-        content += "<th>" + name + "</th>";
-        content += "<th>" + levelTable(score) + "</th>";
-        content += "<th>" + score + "</th>";
-        content += "<th>" + article_num + "</th>";
-        content += "<th>" + titleTable(score) + "</th>";
-        content += "</tr>";
-    }
+		content += "<tr>";
+		content += "<th>" + name + "</th>";
+		content += "<th>" + levelTable(score) + "</th>";
+		content += "<th>" + score + "</th>";
+		content += "<th>" + article_num + "</th>";
+		content += "<th>" + titleTable(score) + "</th>";
+		content += "</tr>";
+	}
 
-    svg_str = svg_str.replace("{{table-data}}", content);
-    const encoder = new TextEncoder();
-    return encoder.encode(svg_str);
+	svg_str = svg_str.replace("{{table-data}}", content);
+	const encoder = new TextEncoder();
+	return encoder.encode(svg_str);
 }
 
 interface contributor {
-    score: number;
-    article_num: number;
-    is_approver: boolean;
-    is_admin: boolean;
+	score: number;
+	article_num: number;
+	is_approver: boolean;
+	is_admin: boolean;
 }
 
 type STupleN = [string, number];
 
 // deno-lint-ignore no-explicit-any
 export function markdownContributors(info: any) {
-    let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
-    content += "| --- | --- | --- | --- | --- |\n";
-    const obj = info;
-    const contributors: Map<string, contributor> = new Map(Object.entries(obj));
-    const arrObj: STupleN[] = [];
-    contributors.forEach((value, key) => {
-        const temp: [string, number] = [key, value?.score || 0];
-        arrObj.push(temp);
-    });
-    arrObj.sort((a, b) => {
-        return b[1] - a[1];
-    });
+	let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
+	content += "| --- | --- | --- | --- | --- |\n";
+	const obj = info;
+	const contributors: Map<string, contributor> = new Map(Object.entries(obj));
+	const arrObj: STupleN[] = [];
+	contributors.forEach((value, key) => {
+		const temp: [string, number] = [key, value?.score || 0];
+		arrObj.push(temp);
+	});
+	arrObj.sort((a, b) => {
+		return b[1] - a[1];
+	});
 
-    for (let index = 0; index < arrObj.length; index++) {
-        const user = contributors.get(arrObj[index][0]);
-        const score = user?.score || 0;
-        const article_num = user?.article_num || 0;
-        let title = titleTable(score);
-        if (user?.is_approver) {
-            title = "审批者";
-        }
-        if (user?.is_admin) {
-            title = "管理员";
-        }
+	for (let index = 0; index < arrObj.length; index++) {
+		const user = contributors.get(arrObj[index][0]);
+		const score = user?.score || 0;
+		const article_num = user?.article_num || 0;
+		let title = titleTable(score);
+		if (user?.is_approver) {
+			title = "审批者";
+		}
+		if (user?.is_admin) {
+			title = "管理员";
+		}
 
-        content +=
-            "| " +
-            arrObj[index][0] +
-            " | " +
-            levelTable(score) +
-            " | " +
-            score +
-            " | " +
-            article_num +
-            " | " +
-            title +
-            " |\n";
-    }
-    return content;
+		content += "| " +
+			arrObj[index][0] +
+			" | " +
+			levelTable(score) +
+			" | " +
+			score +
+			" | " +
+			article_num +
+			" | " +
+			title +
+			" |\n";
+	}
+	return content;
 }
 
 function levelTable(score: number): string {
-    if (score > 0 && score < 10) {
-        return "🌟";
-    } else if (score >= 10 && score < 50) {
-        return "🌟🌟";
-    } else if (score >= 50 && score < 150) {
-        return "🌟🌟🌟";
-    } else if (score >= 150 && score < 400) {
-        return "💎";
-    } else if (score >= 400 && score < 700) {
-        return "💎💎";
-    } else if (score >= 700 && score < 1500) {
-        return "💎💎💎";
-    } else if (score >= 1500 && score < 3000) {
-        return "🔮";
-    } else if (score >= 3000 && score < 5000) {
-        return "🔮🔮";
-    }
-    return "🔮🔮🔮";
+	if (score > 0 && score < 10) {
+		return "🌟";
+	} else if (score >= 10 && score < 50) {
+		return "🌟🌟";
+	} else if (score >= 50 && score < 150) {
+		return "🌟🌟🌟";
+	} else if (score >= 150 && score < 400) {
+		return "💎";
+	} else if (score >= 400 && score < 700) {
+		return "💎💎";
+	} else if (score >= 700 && score < 1500) {
+		return "💎💎💎";
+	} else if (score >= 1500 && score < 3000) {
+		return "🔮";
+	} else if (score >= 3000 && score < 5000) {
+		return "🔮🔮";
+	}
+	return "🔮🔮🔮";
 }
 
 function titleTable(score: number): string {
-    if (score > 0 && score < 150) {
-        return "预备成员";
-    } else if (score >= 150 && score < 700) {
-        return "正式成员";
-    }
-    return "核心成员";
+	if (score > 0 && score < 150) {
+		return "预备成员";
+	} else if (score >= 150 && score < 700) {
+		return "正式成员";
+	}
+	return "核心成员";
 }
