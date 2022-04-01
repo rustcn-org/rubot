@@ -2,6 +2,7 @@ import { CommonConfig } from "../config/common.ts";
 import { markdownContributors } from "./table.ts";
 import { encode, decode } from "https://deno.land/std@0.132.0/encoding/base64.ts";
 
+// 通过 Deno-std 的 decode 解码 base64
 function decodeToString(str: string) {
     const temp = decode(str);
     return new TextDecoder().decode(temp);
@@ -113,7 +114,7 @@ export async function updateScoreList(
         ":" +
         date.getSeconds();
 
-    updateRecord({
+    await updateRecord({
         username: user,
         score: {
             operator: "+",
@@ -125,7 +126,7 @@ export async function updateScoreList(
         },
         timestamp: date_format,
     });
-    updateRanking(curr);
+    await updateRanking(curr);
 
     return response.status == 200;
 }
