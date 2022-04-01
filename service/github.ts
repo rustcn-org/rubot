@@ -1,6 +1,11 @@
 import { CommonConfig } from "../config/common.ts";
 import { markdownContributors } from "./table.ts";
-import { encode } from "https://deno.land/std@0.132.0/encoding/base64.ts";
+import { encode, decode } from "https://deno.land/std@0.132.0/encoding/base64.ts";
+
+function decodeToString(str: string) {
+    const temp = decode(str);
+    return new TextDecoder().decode(temp);
+}
 
 export async function getApproverList(): Promise<string[]> {
     const response = await fetch(
@@ -54,7 +59,7 @@ export async function updateScoreList(
     // https://api.github.com/repos/{owner}/{repo}/contents/{path}
 
     const curr_info = await getContributorInfo();
-    const curr = JSON.parse(atob(curr_info.content));
+    const curr = JSON.parse(decodeToString(curr_info.content));
 
     if (curr[user] == null) {
         curr[user] = {
@@ -138,7 +143,7 @@ async function updateRecord(info: any) {
     const file_info = await (await fetch(url)).json();
 
     // deno-lint-ignore no-explicit-any
-    const curr: Array<any> = JSON.parse(atob(file_info.content));
+    const curr: Array<any> = JSON.parse(decodeToString(file_info.content));
 
     curr.push(info);
 
