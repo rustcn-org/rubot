@@ -88,18 +88,20 @@ export async function drawContributors() {
 }
 
 interface contributor {
+    name: string;
     score: number;
     article_num: number;
     is_approver: boolean;
     is_admin: boolean;
-	title?: string,
+    title?: string;
 }
 
 type STupleN = [string, number];
 
 // deno-lint-ignore no-explicit-any
 export function markdownContributors(info: any) {
-    let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 |\n";
+    let content =
+        "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 | 荣誉称号 ｜\n";
     content += "| --- | --- | --- | --- | --- |\n";
     const obj = info;
     const contributors: Map<string, contributor> = new Map(Object.entries(obj));
@@ -116,21 +118,27 @@ export function markdownContributors(info: any) {
         const user = contributors.get(arrObj[index][0]);
         const score = user?.score || 0;
         const article_num = user?.article_num || 0;
-        let title = titleTable(score);
+        let role = titleTable(score);
         if (user?.is_approver) {
-            title = "审批者";
+            role = "审批者";
         }
         if (user?.is_admin) {
-            title = "管理员";
+            role = "管理员";
         }
 
-		if (user?.title != null) {
-			title = user?.title;
-		}
+        let title = "";
+        if (user?.title != null) {
+            title = user?.title;
+        }
+
+        let display_name = arrObj[index][0];
+        if (user?.name != null) {
+            display_name = user?.name;
+        }
 
         content +=
             "| [" +
-            arrObj[index][0] +
+            display_name +
             "](https://github.com/" +
             arrObj[index][0] +
             ") | " +
@@ -140,8 +148,10 @@ export function markdownContributors(info: any) {
             " | " +
             article_num +
             " | " +
-            title +
-            " |\n";
+            role +
+            " | " +
+            title;
+        (" |\n");
     }
     return content;
 }
