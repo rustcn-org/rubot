@@ -92,6 +92,7 @@ interface contributor {
     article_num: number;
     is_approver: boolean;
     is_admin: boolean;
+	title?: string,
 }
 
 type STupleN = [string, number];
@@ -123,16 +124,16 @@ export function markdownContributors(info: any) {
             title = "管理员";
         }
 
-        if (arrObj[index][0] == "mrxiaozhuox") {
-            title = "Rubot 作者";
-        }
+		if (user?.title != null) {
+			title = user?.title;
+		}
 
         content +=
             "| [" +
             arrObj[index][0] +
-            "]('https://github.com/" +
+            "](https://github.com/" +
             arrObj[index][0] +
-            "') | " +
+            ") | " +
             levelTable(score) +
             " | " +
             score +
