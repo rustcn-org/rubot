@@ -43,13 +43,13 @@ export async function getApproverList(): Promise<string[]> {
 }
 
 export async function getContributorInfo() {
-	const _url = "https://api.github.com/repos/" +
+	const url = "https://api.github.com/repos/" +
 		CommonConfig.organization.name +
 		"/" +
 		CommonConfig.repository +
-		"/contents/Contributors.json";
-	const url =
-		"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
+		"/contents/.github/Contributors.json";
+	// const url =
+	// 	"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
 	const response = await fetch(url);
 	return await response.json();
 }
@@ -76,14 +76,14 @@ export async function updateScoreList(
 		curr[user].article_num += article;
 	}
 
-	const _url = "https://api.github.com/repos/" +
+	const url = "https://api.github.com/repos/" +
 		CommonConfig.organization.name +
 		"/" +
 		CommonConfig.repository +
-		"/contents/Contributors.json";
+		"/contents/.github/contributors.json";
 
-	const url =
-		"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
+	// const url =
+	// 	"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
 
 	const requestBody = {
 		message: "更新贡献者数据",
@@ -133,13 +133,13 @@ export async function updateScoreList(
 
 // deno-lint-ignore no-explicit-any
 async function updateRecord(info: any) {
-	const _url = "https://api.github.com/repos/" +
+	const url = "https://api.github.com/repos/" +
 		CommonConfig.organization.name +
 		"/" +
 		CommonConfig.repository +
-		"/contents/Record.json";
-	const url =
-		"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Record.json";
+		"/contents/.github/contribution-log.json";
+	// const url =
+	// 	"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Record.json";
 	const file_info = await (await fetch(url)).json();
 
 	// deno-lint-ignore no-explicit-any
@@ -176,13 +176,13 @@ async function updateRanking(list: any) {
 	let content = "# 贡献者排行榜\n";
 	content += markdownContributors(list);
 
-	const _url = "https://api.github.com/repos/" +
+	const url = "https://api.github.com/repos/" +
 		CommonConfig.organization.name +
 		"/" +
 		CommonConfig.repository +
-		"/contents/Ranking.md";
-	const url =
-		"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Ranking.md";
+		"/contents/贡献者排名.md";
+	// const url =
+	// 	"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Ranking.md";
 	const file_info = await (await fetch(url)).json();
 
 	const requestBody = {
