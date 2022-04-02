@@ -47,7 +47,7 @@ export async function getContributorInfo() {
 		CommonConfig.organization.name +
 		"/" +
 		CommonConfig.repository +
-		"/contents/.github/Contributors.json";
+		"/contents/.github/contributors.json";
 	// const url =
 	// 	"https://api.github.com/repos/mrxiaozhuox/Rubot-Test/contents/Contributors.json";
 	const response = await fetch(url);
