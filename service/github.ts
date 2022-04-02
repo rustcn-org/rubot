@@ -4,6 +4,7 @@ import {
 	decode,
 	encode,
 } from "https://deno.land/std@0.132.0/encoding/base64.ts";
+import { Dayjs } from "https://esm.sh/dayjs";
 
 // 通过 Deno-std 的 decode 解码 base64
 function decodeToString(str: string) {
@@ -102,19 +103,7 @@ export async function updateScoreList(
 	});
 
 
-	const date = new Date();
-	const date_format = date.getFullYear() +
-		"-" +
-		(date.getMonth() + 1) +
-		"-" +
-		date.getDate() +
-		" " +
-		date.getHours() +
-		":" +
-		date.getMinutes() +
-		":" +
-		date.getSeconds();
-
+	const date = new Dayjs().format("YYYY-MM-DD HH:mm:ss");
 	await updateRecord({
 		username: user,
 		score: {
@@ -125,7 +114,7 @@ export async function updateScoreList(
 			operator: "+",
 			num: article,
 		},
-		timestamp: date_format,
+		timestamp: date,
 	});
 	await updateRanking(curr);
 
