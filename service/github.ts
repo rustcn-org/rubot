@@ -4,7 +4,7 @@ import {
 	decode,
 	encode,
 } from "https://deno.land/std@0.132.0/encoding/base64.ts";
-import { Dayjs } from "https://esm.sh/dayjs";
+import dayjs from "https://esm.sh/dayjs";
 
 // 通过 Deno-std 的 decode 解码 base64
 function decodeToString(str: string) {
@@ -103,7 +103,7 @@ export async function updateScoreList(
 	});
 
 
-	const date = new Dayjs().format("YYYY-MM-DD HH:mm:ss");
+	const date = dayjs().format("YYYY-MM-DD HH:mm:ss");
 	await updateRecord({
 		username: user,
 		score: {
