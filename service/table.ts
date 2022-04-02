@@ -100,7 +100,7 @@ type STupleN = [string, number];
 
 // deno-lint-ignore no-explicit-any
 export function markdownContributors(info: any) {
-	let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 | 荣誉称号 ｜\n";
+	let content = "| 昵称 | 贡献等级 | 积分 | 文章数 | 团队角色 | 荣誉称号 |\n";
 	content += "| --- | --- | --- | --- | --- | --- |\n";
 	const obj = info;
 	const contributors: Map<string, contributor> = new Map(Object.entries(obj));
@@ -155,7 +155,7 @@ export function markdownContributors(info: any) {
 }
 
 function levelTable(score: number): string {
-	if (score > 0 && score < 10) {
+	if (score < 10) {
 		return "🌟";
 	} else if (score >= 10 && score < 50) {
 		return "🌟🌟";

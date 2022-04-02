@@ -101,6 +101,7 @@ export async function updateScoreList(
 		body: JSON.stringify(requestBody),
 	});
 
+
 	const date = new Date();
 	const date_format = date.getFullYear() +
 		"-" +
