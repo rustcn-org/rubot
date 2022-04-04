@@ -149,7 +149,7 @@ async function updateRecord(info: any) {
     // deno-lint-ignore no-explicit-any
     const curr: Array<any> = JSON.parse(decodeToString(file_info.content));
 
-    curr.push(info);
+    curr.unshift(info);
 
     const requestBody = {
         message: "更新记录信息",
