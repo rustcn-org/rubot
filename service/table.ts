@@ -176,7 +176,7 @@ function levelTable(score: number): string {
 }
 
 function titleTable(score: number): string {
-	if (score > 0 && score < 150) {
+	if (score < 150) {
 		return "预备成员";
 	} else if (score >= 150 && score < 700) {
 		return "正式成员";
