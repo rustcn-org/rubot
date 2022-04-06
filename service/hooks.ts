@@ -46,8 +46,12 @@ export async function hooks(context: Context) {
 	} else if (action_type == "assigned" && payload.issue != null) {
 		// 这里处理分配，并更换模板
 		const issue = payload.issue;
-		console.log(issue);
-		updateIssueTemplate(issue);
+		const success = await updateIssueTemplate(issue);
+		if (success) {
+			context.response.status = 200;
+		} else {
+			context.response.status = 500;
+		}
 	} else {
 		context.response.body = {
 			message: "未知的 Hook 类型",

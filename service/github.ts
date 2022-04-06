@@ -149,7 +149,6 @@ export async function updateIssueTemplate(issue: any) {
         return false;
     }
 
-    console.log("TEMP: " + temp);
 
     const username: string = issue.assignee.login;
     const user_url =
