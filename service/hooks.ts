@@ -47,7 +47,7 @@ export async function hooks(context: Context) {
 		// 这里处理分配，并更换模板
 		const issue = payload.issue;
 		const success = await updateIssueTemplate(issue);
-		// 判断最终状态
+		// 判断最终状态，并且返回相应的信息
 		if (success) {
 			context.response.body = {
 				message: "完成",
