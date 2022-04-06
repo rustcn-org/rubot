@@ -135,6 +135,51 @@ export async function updateScoreList(
 }
 
 // deno-lint-ignore no-explicit-any
+export async function updateIssueTemplate(issue: any) {
+    const issue_body: string = issue.body;
+
+    if (issue.assignee == null) {
+        // 没有任何分配者，不操作了直接
+        return false;
+    }
+
+    const re = /\*\*翻译：(.*)\*\*/;
+    const temp = re.exec(issue_body);
+    if (temp == null) {
+        return false;
+    }
+
+    const username: string = issue.assignee.login;
+    const user_url =
+        "**翻译：[" + username + "](https://github.com/" + username + ")**";
+    const new_body = issue_body.replace(temp[0], user_url);
+
+    const url =
+        "https://api.github.com/repos/" +
+        CommonConfig.organization.name +
+        "/" +
+        CommonConfig.repository +
+        "/issues/" +
+        issue.number;
+
+    const requestBody = {
+        message: "更新记录信息",
+        body: new_body,
+        state: "open",
+    };
+
+    const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+            "content-type": "application/json",
+            accept: "application/vnd.github.v3+json",
+            authorization: "token " + CommonConfig.bot.token,
+        },
+        body: JSON.stringify(requestBody),
+    });
+}
+
+// deno-lint-ignore no-explicit-any
 async function updateRecord(info: any) {
     const url =
         "https://api.github.com/repos/" +

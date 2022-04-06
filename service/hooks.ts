@@ -1,6 +1,6 @@
 import { Context } from "https://deno.land/x/oak@v10.5.1/mod.ts";
 // import { CommonConfig } from "../config/common.ts";
-import { getApproverList, updateScoreList } from "./github.ts";
+import { getApproverList, updateScoreList, updateIssueTemplate } from "./github.ts";
 import { verify } from "https://raw.githubusercontent.com/octokit/webhooks-methods.js/v2.0.0/src/web.ts";
 
 export async function hooks(context: Context) {
@@ -45,6 +45,8 @@ export async function hooks(context: Context) {
 		await comment_created(context, cc_info);
 	} else if (action_type == "assigned" && payload.issue != null) {
 		// 这里处理分配，并更换模板
+		const issue = payload.issue;
+		updateIssueTemplate(issue);
 	} else {
 		context.response.body = {
 			message: "未知的 Hook 类型",
