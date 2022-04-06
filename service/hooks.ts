@@ -43,6 +43,8 @@ export async function hooks(context: Context) {
 		};
 
 		await comment_created(context, cc_info);
+	} else if (action_type == "assigned" && payload.issue != null) {
+		// 这里处理分配，并更换模板
 	} else {
 		context.response.body = {
 			message: "未知的 Hook 类型",
