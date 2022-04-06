@@ -177,6 +177,13 @@ export async function updateIssueTemplate(issue: any) {
         },
         body: JSON.stringify(requestBody),
     });
+    
+    if (response.status != 200) {
+        console.log("[Record Failed]: " + JSON.stringify(requestBody));
+        console.log("[Record Failed]: " + (await response.text()));
+    }
+
+    return response.status == 200;
 }
 
 // deno-lint-ignore no-explicit-any
