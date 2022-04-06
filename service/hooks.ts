@@ -46,6 +46,7 @@ export async function hooks(context: Context) {
 	} else if (action_type == "assigned" && payload.issue != null) {
 		// 这里处理分配，并更换模板
 		const issue = payload.issue;
+		console.log(issue);
 		updateIssueTemplate(issue);
 	} else {
 		context.response.body = {
