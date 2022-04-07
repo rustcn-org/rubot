@@ -12,6 +12,7 @@ export const CommonConfig = {
 		teams: {
 			"approvers": "rustt-approvers",
 		},
+		branch: "main",
 	},
 
 	repository: "Rustt",

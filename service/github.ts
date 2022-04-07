@@ -151,9 +151,11 @@ export async function updateIssueTemplate(issue: any) {
         return false;
     }
 
-    const username: string = issue.assignee.login;
+
+    const login: string = issue.assignee.login;
+    const username = (await getContributorRawInfo(login)).name || login;
     const user_url =
-        "**翻译：[" + username + "](https://github.com/" + username + ")**";
+        "**翻译：[" + username + "](https://github.com/" + login + ")**";
     const new_body = issue_body.replace(temp[0], user_url);
 
     const url =
@@ -169,7 +171,7 @@ export async function updateIssueTemplate(issue: any) {
     for (const key in oriLabels) {
         let t = oriLabels[key].name;
         if (t == "待认领") {
-            t = "已认领"
+            t = "已认领";
         }
         labels.push(t);
     }
@@ -190,7 +192,7 @@ export async function updateIssueTemplate(issue: any) {
         },
         body: JSON.stringify(requestBody),
     });
-    
+
     if (response.status != 200) {
         console.log("[Record Failed]: " + JSON.stringify(requestBody));
         console.log("[Record Failed]: " + (await response.text()));
@@ -277,4 +279,17 @@ async function updateRanking(list: any) {
     }
 
     return response.status == 200;
+}
+
+async function getContributorRawInfo(name: string) {
+    const url =
+        "https://raw.githubusercontent.com/" +
+        CommonConfig.organization.name +
+        "/" +
+        CommonConfig.repository +
+        "/" +
+        CommonConfig.organization.branch +
+        "/.github/contributors.json";
+    const response = await (await fetch(url)).json();
+    return response[name];
 }
