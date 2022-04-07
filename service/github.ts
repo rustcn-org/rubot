@@ -140,12 +140,14 @@ export async function updateIssueTemplate(issue: any) {
 
     if (issue.assignee == null) {
         // 没有任何分配者，不操作了直接
+        console.log("无分配者...");
         return false;
     }
 
     const re = /\*\*翻译：(.*)\*\*/;
     const temp = re.exec(issue_body);
     if (temp == null) {
+        console.log("正则表达式匹配失败：" + issue_body);
         return false;
     }
 
