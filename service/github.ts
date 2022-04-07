@@ -151,7 +151,6 @@ export async function updateIssueTemplate(issue: any) {
         return false;
     }
 
-
     const username: string = issue.assignee.login;
     const user_url =
         "**翻译：[" + username + "](https://github.com/" + username + ")**";
@@ -165,10 +164,21 @@ export async function updateIssueTemplate(issue: any) {
         "/issues/" +
         issue.number;
 
+    const oriLabels = issue.labels;
+    const labels = [];
+    for (const key in oriLabels) {
+        let t = oriLabels[key].name;
+        if (t == "待认领") {
+            t = "已认领"
+        }
+        labels.push(t);
+    }
+
     const requestBody = {
         message: "更新记录信息",
         body: new_body,
         state: "open",
+        labels: labels,
     };
 
     const response = await fetch(url, {
