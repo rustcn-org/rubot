@@ -28,9 +28,9 @@ export async function hooks(context: Context) {
 	}
 
 	const payload = await body.value;
-	const action_type = payload.action;
+	const actionType = payload.action;
 
-	if (action_type == "created" && payload.comment != null) {
+	if (actionType == "created" && payload.comment != null) {
 		const cc_info = {
 			issue: {
 				title: payload.issue.title,
@@ -43,7 +43,7 @@ export async function hooks(context: Context) {
 		};
 
 		await comment_created(context, cc_info);
-	} else if (action_type == "assigned" && payload.issue != null) {
+	} else if (actionType == "assigned" && payload.issue != null) {
 		// 这里处理分配，并更换模板
 		const issue = payload.issue;
 		const success = await updateIssueTemplate(issue);
@@ -58,6 +58,13 @@ export async function hooks(context: Context) {
 				message: "更新 ISSUE 失败",
 			}
 			context.response.status = 500;
+		}
+	} else if (actionType == "labeled" && payload.label != null && payload.issue != null) {
+		// 这里判断 labels 更新，如果包含已翻译，则尝试去更新最新翻译列表
+		const labelName = payload.label.name;
+		if (labelName == "已翻译") {
+			// 这里通过正则表达式提取类型、日期和标题。
+			const re = /\[(文章|书籍|资讯)\]\[([0-9]{4})-([0-9]{2})-([0-9]{2})\]/;
 		}
 	} else {
 		context.response.body = {
