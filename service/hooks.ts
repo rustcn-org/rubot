@@ -64,7 +64,7 @@ export async function hooks(context: Context) {
 		const labelName = payload.label.name;
 		if (labelName == "已翻译") {
 			// 这里通过正则表达式提取类型、日期和标题。
-			const re = /\[(文章|书籍|资讯)\]\[([0-9]{4})-([0-9]{2})-([0-9]{2})\]/;
+			const re = /\[(文章|书籍|资讯)\]\[([0-9]{4})-([0-9]{2})-([0-9]{2})\](.*)/;
 		}
 	} else {
 		context.response.body = {
