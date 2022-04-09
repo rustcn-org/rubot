@@ -144,7 +144,7 @@ export function markdownContributors(info: any) {
 			" | " +
 			score +
 			" | " +
-			article_num +
+			`[${article_num}](https://github.com/search?q=repo%3Astudyrs%2FRustt+assignee%3A${arrObj[index][0]}+state%3Aclosed&type=Issues&ref=advsearch)` +
 			" | " +
 			role +
 			" | " +
