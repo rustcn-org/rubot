@@ -144,7 +144,7 @@ export function markdownContributors(info: any) {
 			" | " +
 			score +
 			" | " +
-			article_num +
+			`[${article_num}](https://github.com/search?q=${arrObj[index][0]}+repo%3Astudyrs%2FRustt+path%3A%2FArticles&type=Code&ref=advsearch)` +
 			" | " +
 			role +
 			" | " +
