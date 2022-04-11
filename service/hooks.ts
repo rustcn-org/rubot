@@ -66,6 +66,10 @@ export async function hooks(context: Context) {
 			// 这里通过正则表达式提取类型、日期和标题。
 			const re = /\[(文章|书籍|资讯)\]\[([0-9]{4}-[0-9]{2}-[0-9]{2})\](.*)/;
 			const title = payload.issue.title;
+			const match = re.exec(title);
+			if (match == null) {
+				// 说明没有匹配成功（不是选题 ISSUE 标题）
+			}
 		}
 	} else {
 		context.response.body = {
