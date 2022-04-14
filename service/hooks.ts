@@ -1,5 +1,4 @@
 import { Context } from "https://deno.land/x/oak@v10.5.1/mod.ts";
-// import { CommonConfig } from "../config/common.ts";
 import { getApproverList, updateScoreList, updateIssueTemplate } from "./github.ts";
 import { verify } from "https://raw.githubusercontent.com/octokit/webhooks-methods.js/v2.0.0/src/web.ts";
 
@@ -92,7 +91,10 @@ interface CommentCreated {
 async function comment_created(context: Context, info: CommentCreated) {
 	const approvers = await getApproverList();
 	if (approvers.indexOf(info.creator) == -1) {
-		return "";
+		context.response.status = 200;
+		context.response.body = {
+			message: "忽略处理",
+		};
 	}
 	// 具体解析 Approver 的评论
 	// [选题|翻译] + 10
