@@ -144,7 +144,7 @@ export async function updateIssueTemplate(issue: any) {
         return true;
     }
 
-    const assignee = issue.assignee ?? issue.assignees[0];
+    const assignee = issue.assignees[0] ?? issue.assignee;
 
 
 
