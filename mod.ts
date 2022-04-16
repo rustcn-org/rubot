@@ -4,7 +4,9 @@ import { router } from "./core/route.ts";
 import { CommonConfig } from "./config/common.ts";
 
 // 创建一个 oak 应用程序
-const app = new Application();
+const app = new Application({
+    logErrors: false
+});
 
 app.use(router.routes());
 app.use(router.allowedMethods());
