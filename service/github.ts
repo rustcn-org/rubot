@@ -138,11 +138,15 @@ export async function updateScoreList(
 export async function updateIssueTemplate(issue: any) {
     const issue_body: string = issue.body;
 
-    if (issue.assignee == null) {
+    if (issue.assignee == null && issue.assignees == null) {
         // 没有任何分配者，不操作了直接
         console.log("无分配者...");
         return true;
     }
+
+    const assignee = issue.assignee ?? issue.assignees[0];
+
+
 
     const re = /\*\*翻译：(.*)\*\*/;
     const temp = re.exec(issue_body);
@@ -152,7 +156,7 @@ export async function updateIssueTemplate(issue: any) {
     }
 
 
-    const login: string = issue.assignee.login;
+    const login: string = assignee.login;
     const username = (await getContributorRawInfo(login)).name || login;
     const user_url =
         "**翻译：[" + username + "](https://github.com/" + login + ")**";
