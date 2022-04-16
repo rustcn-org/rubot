@@ -141,7 +141,7 @@ export async function updateIssueTemplate(issue: any) {
     if (issue.assignee == null) {
         // 没有任何分配者，不操作了直接
         console.log("无分配者...");
-        return false;
+        return true;
     }
 
     const re = /\*\*翻译：(.*)\*\*/;
