@@ -72,7 +72,7 @@ function levelTable(score: number): [string, string] {
     const table = getLevel();
     for (const key in table) {
         const tmp = table[key];
-        if (tmp.points < score) {
+        if (score < tmp.points) {
             return [tmp.icon, tmp.title];
         }
     }
