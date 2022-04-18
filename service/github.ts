@@ -74,7 +74,7 @@ export async function updateScoreList(
         //     is_admin: false,
         // };
         console.warn("尝试为不存在的贡献者更新积分。");
-        return false;
+        return true;
     } else {
         curr[user].score += num;
         curr[user].article_num += article;
