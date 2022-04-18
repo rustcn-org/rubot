@@ -67,12 +67,14 @@ export async function updateScoreList(
     const curr = JSON.parse(decodeToString(curr_info.content));
 
     if (curr[user] == null) {
-        curr[user] = {
-            score: num,
-            article_num: article,
-            is_approver: false,
-            is_admin: false,
-        };
+        // curr[user] = {
+        //     score: num,
+        //     article_num: article,
+        //     is_approver: false,
+        //     is_admin: false,
+        // };
+        console.warn("尝试为不存在的贡献者更新积分。");
+        return false;
     } else {
         curr[user].score += num;
         curr[user].article_num += article;
